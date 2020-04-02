@@ -2,33 +2,34 @@ import unittest
 from employee import Employee
 
 
-class EmployeeTest(unittest.TestCase):
+class TestEmployee(unittest.TestCase):
 
-    emp1 = Employee('Jan', 'Kowalski', 5000)
-    emp2 = Employee('Kuba', 'Nowak', 4000)
+    def setUp(self):
+        self.emp1 = Employee('Jan', 'Kowalski', 5000)
+        self.emp2 = Employee('Kuba', 'Nowak', 4000)
+
+    def tearDown(self):
+        return super().tearDown()
+
     def test_email(self):
+        self.assertEqual(self.emp1.email, 'Jan.Kowalski@email.com')
+        self.assertEqual(self.emp2.email, 'Kuba.Nowak@email.com')
 
+        self.emp1.first = 'Janek'
+        self.emp2.last = "Nowakowski"
 
-        self.assertEqual(EmployeeTest.emp1.email, 'Jan.Kowalski@email.com')
-        self.assertEqual(EmployeeTest.emp2.email, 'Kuba.Nowak@email.com')
-
-        EmployeeTest.emp1.first = 'Janek'
-        EmployeeTest.emp2.last = "Nowakowski"
-
-        self.assertEqual(EmployeeTest.emp1.email, 'Janek.Kowalski@email.com')
-        self.assertEqual(EmployeeTest.emp2.email, 'Kuba.Nowakowski@email.com')
+        self.assertEqual(self.emp1.email, 'Janek.Kowalski@email.com')
+        self.assertEqual(self.emp2.email, 'Kuba.Nowakowski@email.com')
 
     def test_apply_raise(self):
-        
+        self.assertEqual(self.emp1.pay, 5000)
+        self.assertEqual(self.emp2.pay, 4000)
 
-        self.assertEqual(EmployeeTest.emp1.pay, 5000)
-        self.assertEqual(EmployeeTest.emp2.pay, 4000)
+        self.emp1.apply_raise()
+        self.emp2.apply_raise()
 
-        EmployeeTest.emp1.apply_raise()
-        EmployeeTest.emp2.apply_raise()
-
-        self.assertEqual(EmployeeTest.emp1.pay, 1.05*5000)
-        self.assertEqual(EmployeeTest.emp2.pay, 1.05*4000)
+        self.assertEqual(self.emp1.pay, 1.05*5000)
+        self.assertEqual(self.emp2.pay, 1.05*4000)
 
 
 if __name__ == '__main__':
