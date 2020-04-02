@@ -4,6 +4,14 @@ from employee import Employee
 
 class TestEmployee(unittest.TestCase):
 
+    @classmethod
+    def setUpClass(cls):
+        print('setting up')
+
+    @classmethod
+    def tearDownClass(cls):
+        return super().tearDownClass()
+
     def setUp(self):
         self.emp1 = Employee('Jan', 'Kowalski', 5000)
         self.emp2 = Employee('Kuba', 'Nowak', 4000)
