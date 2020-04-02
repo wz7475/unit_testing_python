@@ -1,6 +1,6 @@
 import unittest
 from employee import Employee
-
+from unittest.mock import patch
 
 class TestEmployee(unittest.TestCase):
 
@@ -38,6 +38,22 @@ class TestEmployee(unittest.TestCase):
 
         self.assertEqual(self.emp1.pay, 1.05*5000)
         self.assertEqual(self.emp2.pay, 1.05*4000)
+
+
+    def test_monthly_schedule(self):
+        with patch('employee.requests.get') as mocked_get:
+            mocked_get.return_value.ok = True
+            mocked_get.return_value.text = 'Success'
+
+            schedule = self.emp1.monthly_schedule('May')
+            mocked_get.assert_called_with('http://company.com/Kowalski/May')
+            self.assertEqual(schedule, 'Success')
+
+            mocked_get.return_value.ok = False
+
+            schedule = self.emp2.monthly_schedule('June')
+            mocked_get.assert_called_with('http://company.com/Nowak/June')
+            self.assertEqual(schedule, 'Bad Response!')
 
 
 if __name__ == '__main__':
